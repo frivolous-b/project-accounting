@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Счетоводни Услуги | Мария Иванова</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #1a3a5c;
+      --accent:  #2e7dae;
+      --light:   #f0f6fc;
+      --gold:    #c9a84c;
+      --text:    #1e2d3d;
+      --muted:   #6b7c93;
+      --white:   #ffffff;
+      --radius:  12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 5%;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      transition: box-shadow .3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+
+    .nav-logo {
+      font-size: 1.1rem; font-weight: 700;
+      color: var(--primary); letter-spacing: -.3px;
+    }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted);
+      font-size: .9rem; font-weight: 500; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--primary); }
+
+    .nav-cta {
+      background: var(--primary); color: var(--white) !important;
+      padding: .5rem 1.25rem; border-radius: 8px;
+      transition: background .2s !important;
+    }
+    .nav-cta:hover { background: var(--accent) !important; color: var(--white) !important; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 6rem 5% 4rem;
+      background: linear-gradient(135deg, #f0f6fc 0%, #dbeaf6 60%, #c8dff2 100%);
+      position: relative; overflow: hidden;
+    }
+
+    #hero::before {
+      content: '';
+      position: absolute; top: -200px; right: -200px;
+      width: 700px; height: 700px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(46,125,174,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center; max-width: 1200px; margin: 0 auto; width: 100%;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(46,125,174,.12); color: var(--accent);
+      border: 1px solid rgba(46,125,174,.25);
+      padding: .35rem .9rem; border-radius: 50px;
+      font-size: .8rem; font-weight: 600; letter-spacing: .4px;
+      margin-bottom: 1.5rem; text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700; line-height: 1.15;
+      color: var(--primary); margin-bottom: 1.25rem;
+    }
+    h1 em { font-style: normal; color: var(--accent); }
+
+    .hero-sub {
+      font-size: 1.05rem; color: var(--muted);
+      max-width: 480px; margin-bottom: 2rem; line-height: 1.75;
+    }
+
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .85rem 1.8rem; border-radius: 10px;
+      font-size: .95rem; font-weight: 600;
+      text-decoration: none; transition: all .25s; cursor: pointer; border: none;
+    }
+    .btn-primary { background: var(--primary); color: var(--white); }
+    .btn-primary:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,58,92,.25); }
+    .btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+    .btn-outline:hover { background: var(--primary); color: var(--white); transform: translateY(-2px); }
+
+    .hero-stats {
+      display: flex; gap: 2rem; margin-top: 3rem; padding-top: 2rem;
+      border-top: 1px solid rgba(26,58,92,.1);
+    }
+    .stat-item { }
+    .stat-num { font-size: 1.8rem; font-weight: 700; color: var(--primary); line-height: 1; }
+    .stat-label { font-size: .8rem; color: var(--muted); margin-top: .2rem; }
+
+    .hero-visual {
+      display: flex; justify-content: center; align-items: center;
+    }
+
+    .hero-card {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 0 32px 80px rgba(26,58,92,.15);
+      width: 100%; max-width: 380px;
+      position: relative;
+    }
+
+    .hero-card::after {
+      content: '';
+      position: absolute; bottom: -20px; right: -20px;
+      width: 120px; height: 120px;
+      background: var(--gold); border-radius: 50%;
+      opacity: .08; z-index: -1;
+    }
+
+    .card-icon {
+      width: 56px; height: 56px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 1.5rem;
+    }
+
+    .card-title { font-size: 1.1rem; font-weight: 700; color: var(--primary); margin-bottom: .5rem; }
+    .card-desc  { font-size: .85rem; color: var(--muted); margin-bottom: 1.5rem; }
+
+    .card-items { display: flex; flex-direction: column; gap: .75rem; }
+    .card-item {
+      display: flex; align-items: center; gap: .75rem;
+      padding: .75rem 1rem;
+      background: var(--light); border-radius: 10px;
+    }
+    .card-item-icon { font-size: 1.1rem; }
+    .card-item-text { font-size: .85rem; font-weight: 500; color: var(--text); }
+    .card-item-badge {
+      margin-left: auto; font-size: .75rem; font-weight: 600;
+      padding: .2rem .6rem; border-radius: 50px;
+      background: rgba(46,125,174,.12); color: var(--accent);
+    }
+
+    /* ── SERVICES ── */
+    #services {
+      padding: 6rem 5%;
+      background: var(--white);
+    }
+
+    .section-header { text-align: center; margin-bottom: 3.5rem; }
+    .section-tag {
+      display: inline-block;
+      font-size: .78rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--accent); margin-bottom: .75rem;
+    }
+    h2 {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700; color: var(--primary); line-height: 1.2; margin-bottom: 1rem;
+    }
+    .section-sub { color: var(--muted); font-size: 1rem; max-width: 520px; margin: 0 auto; }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; max-width: 1200px; margin: 0 auto;
+    }
+
+    .service-card {
+      padding: 2rem;
+      border: 1px solid rgba(26,58,92,.08);
+      border-radius: var(--radius);
+      transition: all .3s; cursor: default;
+      position: relative; overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .3s;
+    }
+    .service-card:hover { box-shadow: 0 16px 48px rgba(26,58,92,.1); transform: translateY(-4px); }
+    .service-card:hover::before { transform: scaleX(1); }
+
+    .service-icon {
+      width: 52px; height: 52px;
+      background: var(--light); border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 1.25rem;
+    }
+    .service-title { font-size: 1rem; font-weight: 700; color: var(--primary); margin-bottom: .6rem; }
+    .service-desc  { font-size: .875rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── WHY US ── */
+    #why {
+      padding: 6rem 5%;
+      background: linear-gradient(135deg, var(--primary) 0%, #0f2540 100%);
+      color: var(--white);
+    }
+
+    #why .section-tag { color: var(--gold); }
+    #why h2 { color: var(--white); }
+    #why .section-sub { color: rgba(255,255,255,.6); }
+
+    .why-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem; max-width: 1200px; margin: 0 auto;
+    }
+
+    .why-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      transition: background .3s;
+    }
+    .why-card:hover { background: rgba(255,255,255,.1); }
+
+    .why-num {
+      font-size: 2.5rem; font-weight: 800;
+      color: var(--gold); line-height: 1; margin-bottom: .75rem;
+    }
+    .why-title { font-size: .95rem; font-weight: 600; margin-bottom: .5rem; }
+    .why-desc  { font-size: .83rem; color: rgba(255,255,255,.6); line-height: 1.6; }
+
+    /* ── ABOUT ── */
+    #about {
+      padding: 6rem 5%; background: var(--white);
+    }
+
+    .about-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center; max-width: 1200px; margin: 0 auto;
+    }
+
+    .about-photo-wrap {
+      position: relative;
+    }
+
+    .about-photo {
+      width: 100%; aspect-ratio: 4/5; border-radius: 24px;
+      background: linear-gradient(135deg, var(--light), #c8dff2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 6rem; overflow: hidden;
+    }
+
+    .about-badge {
+      position: absolute; bottom: 2rem; right: -1.5rem;
+      background: var(--white);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 20px 60px rgba(26,58,92,.15);
+      text-align: center;
+    }
+    .about-badge-num  { font-size: 2rem; font-weight: 800; color: var(--primary); line-height: 1; }
+    .about-badge-text { font-size: .75rem; color: var(--muted); margin-top: .25rem; }
+
+    .about-content { }
+    .about-list { list-style: none; display: flex; flex-direction: column; gap: .75rem; margin: 1.5rem 0 2rem; }
+    .about-list li {
+      display: flex; align-items: flex-start; gap: .75rem;
+      font-size: .9rem; color: var(--muted); line-height: 1.5;
+    }
+    .about-list li::before {
+      content: '✓';
+      flex-shrink: 0; width: 22px; height: 22px;
+      background: rgba(46,125,174,.12); color: var(--accent);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: .75rem; font-weight: 700; margin-top: .1rem;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      padding: 6rem 5%;
+      background: var(--light);
+    }
+
+    .contact-inner {
+      display: grid; grid-template-columns: 1fr 1.4fr;
+      gap: 4rem; align-items: start; max-width: 1100px; margin: 0 auto;
+    }
+
+    .contact-info h3 { font-size: 1.3rem; font-weight: 700; color: var(--primary); margin-bottom: .75rem; }
+    .contact-info p  { font-size: .9rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.7; }
+
+    .contact-details { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-detail {
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .detail-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      background: var(--white);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    .detail-label { font-size: .75rem; color: var(--muted); }
+    .detail-value { font-size: .9rem; font-weight: 600; color: var(--primary); }
+
+    .contact-form {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 40px rgba(26,58,92,.08);
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .form-group { display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1.25rem; }
+    .form-group label { font-size: .82rem; font-weight: 600; color: var(--text); }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      padding: .75rem 1rem;
+      border: 1.5px solid rgba(26,58,92,.12);
+      border-radius: 10px;
+      font-family: inherit; font-size: .9rem; color: var(--text);
+      background: var(--white);
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(46,125,174,.1);
+    }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+
+    .form-submit { width: 100%; font-size: 1rem; padding: 1rem; border-radius: 10px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--primary);
+      color: rgba(255,255,255,.6);
+      text-align: center;
+      padding: 2rem 5%;
+      font-size: .85rem;
+    }
+    footer strong { color: var(--white); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero-inner, .about-inner, .contact-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero-visual { display: none; }
+      .hero-stats { gap: 1.5rem; }
+      .about-badge { right: 1rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">Счето<span>водство</span> БГ</div>
+  <ul class="nav-links">
+    <li><a href="#services">Услуги</a></li>
+    <li><a href="#why">Защо ние</a></li>
+    <li><a href="#about">За нас</a></li>
+    <li><a href="#contact" class="nav-cta">Свържете се</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">⭐ Лицензиран счетоводител</div>
+      <h1>Вашият <em>надежден</em> финансов партньор</h1>
+      <p class="hero-sub">
+        Професионални счетоводни услуги за малки и средни бизнеси.
+        Спокойствие за финансите ви — от ТРЗ до годишни отчети.
+      </p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn btn-primary">Безплатна консултация</a>
+        <a href="#services" class="btn btn-outline">Нашите услуги</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num">15+</div>
+          <div class="stat-label">Години опит</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">200+</div>
+          <div class="stat-label">Доволни клиенти</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Точност</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="card-icon">📊</div>
+        <div class="card-title">Финансов преглед</div>
+        <div class="card-desc">Актуален статус на вашия бизнес</div>
+        <div class="card-items">
+          <div class="card-item">
+            <span class="card-item-icon">📑</span>
+            <span class="card-item-text">Счетоводство</span>
+            <span class="card-item-badge">Активно</span>
+          </div>
+          <div class="card-item">
+            <span class="card-item-icon">👥</span>
+            <span class="card-item-text">ТРЗ и осигуровки</span>
+            <span class="card-item-badge">Активно</span>
+          </div>
+          <div class="card-item">
+            <span class="card-item-icon">🏛️</span>
+            <span class="card-item-text">Данъчни декларации</span>
+            <span class="card-item-badge">Навреме</span>
+          </div>
+          <div class="card-item">
+            <span class="card-item-icon">📋</span>
+            <span class="card-item-text">Годишен отчет</span>
+            <span class="card-item-badge">Готов</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-header">
+    <div class="section-tag">Какво предлагаме</div>
+    <h2>Пълен спектър от счетоводни услуги</h2>
+    <p class="section-sub">Всичко, което вашият бизнес се нуждае, на едно място.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">📒</div>
+      <div class="service-title">Текущо счетоводство</div>
+      <div class="service-desc">Обработка на първични документи, водене на счетоводни регистри и изготвяне на финансови отчети.</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">💼</div>
+      <div class="service-title">ТРЗ и личен състав</div>
+      <div class="service-desc">Изчисляване на заплати, осигуровки, болнични. Подаване на декларации в НАП и НОИ.</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🧾</div>
+      <div class="service-title">Данъчни услуги</div>
+      <div class="service-desc">ДДС декларации, корпоративен данък, данък ДДФЛ. Данъчна оптимизация в рамките на закона.</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🏢</div>
+      <div class="service-title">Регистрация на фирма</div>
+      <div class="service-desc">Пълно съдействие при регистрация на ЕООД, ООД или ЕТ. Консултации за избор на правна форма.</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📊</div>
+      <div class="service-title">Финансов анализ</div>
+      <div class="service-desc">Анализ на приходи, разходи и рентабилност. Помощ при вземане на стратегически бизнес решения.</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🤝</div>
+      <div class="service-title">Консултации</div>
+      <div class="service-desc">Безплатна първоначална консултация. Съвети при данъчни ревизии и одити.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="section-header">
+    <div class="section-tag">Защо да изберете нас</div>
+    <h2>Повече от просто счетоводство</h2>
+    <p class="section-sub">Вашият успех е нашият приоритет.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-num">01</div>
+      <div class="why-title">Индивидуален подход</div>
+      <div class="why-desc">Всеки клиент е уникален. Адаптираме услугите спрямо специфичните нужди на вашия бизнес.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-num">02</div>
+      <div class="why-title">Навременност</div>
+      <div class="why-desc">Никога не пропускаме срокове. Подаваме всички документи в НАП и НОИ точно навреме.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-num">03</div>
+      <div class="why-title">Прозрачност</div>
+      <div class="why-desc">Ясно ценообразуване без скрити такси. Редовни отчети за финансовото ви положение.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-num">04</div>
+      <div class="why-title">Дигитален офис</div>
+      <div class="why-desc">Изцяло онлайн комуникация и обмен на документи. Без нужда от физически срещи.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-photo-wrap">
+      <div class="about-photo">👩‍💼</div>
+      <div class="about-badge">
+        <div class="about-badge-num">15+</div>
+        <div class="about-badge-text">Години опит</div>
+      </div>
+    </div>
+    <div class="about-content">
+      <div class="section-tag">За нас</div>
+      <h2>Мария Иванова — Дипломиран счетоводител</h2>
+      <p style="color: var(--muted); font-size: .95rem; line-height: 1.75; margin: 1rem 0;">
+        С над 15 години опит в областта на счетоводството и данъчното законодателство,
+        помагам на стотици фирми да управляват финансите си ефективно и законосъобразно.
+      </p>
+      <ul class="about-list">
+        <li>Дипломиран счетоводител, член на ИДЕС</li>
+        <li>Специалист по корпоративно данъчно облагане</li>
+        <li>Опит с фирми от над 20 различни сектора</li>
+        <li>Регулярни обучения и актуализиране на знанията</li>
+        <li>Лично отношение към всеки клиент</li>
+      </ul>
+      <a href="#contact" class="btn btn-primary">Насрочете консултация</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <div class="section-tag">Контакт</div>
+    <h2>Свържете се с нас</h2>
+    <p class="section-sub">Напишете ни и ще се свържем с вас в рамките на 24 часа.</p>
+  </div>
+  <div class="contact-inner">
+    <div class="contact-info">
+      <h3>Винаги на разположение</h3>
+      <p>Имате въпроси? Нуждаете се от бърза консултация? Не се колебайте да се свържете с нас по удобния за вас начин.</p>
+      <div class="contact-details">
+        <div class="contact-detail">
+          <div class="detail-icon">📞</div>
+          <div>
+            <div class="detail-label">Телефон</div>
+            <div class="detail-value">+359 88 123 4567</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="detail-icon">✉️</div>
+          <div>
+            <div class="detail-label">Имейл</div>
+            <div class="detail-value">info@schetovodstvo.bg</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="detail-icon">📍</div>
+          <div>
+            <div class="detail-label">Адрес</div>
+            <div class="detail-value">гр. София, ул. Примерна 12</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="detail-icon">🕐</div>
+          <div>
+            <div class="detail-label">Работно време</div>
+            <div class="detail-value">Пон–Пет: 09:00 – 18:00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Вашето име</label>
+          <input type="text" placeholder="Иван Иванов" />
+        </div>
+        <div class="form-group">
+          <label>Имейл</label>
+          <input type="email" placeholder="ivan@example.com" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Телефон</label>
+        <input type="tel" placeholder="+359 88 xxx xxxx" />
+      </div>
+      <div class="form-group">
+        <label>Услуга</label>
+        <select>
+          <option value="">Изберете услуга...</option>
+          <option>Текущо счетоводство</option>
+          <option>ТРЗ и личен състав</option>
+          <option>Данъчни услуги</option>
+          <option>Регистрация на фирма</option>
+          <option>Финансов анализ</option>
+          <option>Консултация</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Съобщение</label>
+        <textarea placeholder="Опишете накратко вашите нужди..."></textarea>
+      </div>
+      <button class="btn btn-primary form-submit">Изпратете запитване →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <strong>Счетоводство БГ — Мария Иванова</strong>. Всички права запазени.</p>
+  <p style="margin-top:.5rem; font-size:.78rem;">Лицензиран счетоводител · ИДЕС член · ДДС регистрация</p>
+</footer>
+
+<script>
+  // Navbar shadow on scroll
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Smooth reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.service-card, .why-card, .hero-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity .5s ease, transform .5s ease';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
