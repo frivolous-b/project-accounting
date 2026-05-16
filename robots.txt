@@ -1,0 +1,25 @@
+# robots.txt — Експерт. счетоводна кантора
+# Публичен landing page — позволяваме индексиране
+
+User-agent: *
+Allow: /
+
+# Не индексирай edit mode URL-и (query string)
+Disallow: /*?edit=
+Disallow: /*?edit=1
+
+# AI crawlers — изрично allow (за AI Overviews / LLM citations)
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+# Sitemap (генерирайте след публикация и заменете домейна)
+# Sitemap: https://www.example.bg/sitemap.xml
