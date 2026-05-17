@@ -160,10 +160,10 @@
 
      2. Достъп е разрешен всеки ден, 08:00–22:00 (часова зона София).
 
-     3. Първи login: въведете първоначалната парола „qwe@123"
-        (получена от разработчика). Системата ще ви принуди да зададете
-        лична парола — мин. 8 знака. Паролата се пази в localStorage
-        на ТОЗИ браузър (не в HTML файла) — затова важи само на това
+     3. Първи login: въведете първоначалната парола (получена от
+        разработчика). Системата ще ви принуди да зададете лична парола
+        — мин. 8 знака. Паролата се пази в браузъра, в който я
+        зададохте (не в HTML файла) — затова важи само на това
         устройство/браузър.
 
      4. Сменете паролата по всяко време от бутона „🔑 Парола" в edit
@@ -179,10 +179,7 @@
 
      7. Промените НЕ се запазват автоматично — винаги изтегляйте файла
 
-     SECURITY НАСТРОЙКИ:
-       • 3 грешни опита → 5 мин блокиране
-       • 30 мин неактивност → автоматично излизане
-       • Master парола за recovery: ИЗВЕСТНА САМО НА РАЗРАБОТЧИКА
+     ЗА ВЪЗСТАНОВЯВАНЕ НА ДОСТЪП — свържете се с разработчика.
 
      ВАЖНО ПРЕДИ ПУБЛИКАЦИЯ:
        • Calendly линк (търсете „data-edit-href=&quot;booking-link&quot;")
@@ -3290,30 +3287,10 @@ body.menu-open {
 
 
 <script>
-/* ════════════════════════════════════════════════════════════════
-   AUTH + EDIT MODE — v3.2 enterprise-grade security
-
-   • SHA-256 хеширане (Web Crypto API)
-   • Master парола (recovery) + Initial парола (за първи login)
-   • User парола → SHA-256 в localStorage (self-service смяна)
-   • Rate limiting: 3 неуспешни опита → 5 мин lockout
-   • Time-based access: всеки ден, 08:00–22:00, Europe/Sofia
-   • Auto-logout след 30 мин неактивност
-   • Audit log: до 50 събития в localStorage
-   • Device fingerprint warning (не блокира, само toast)
-
-   ⚠️ ВАЖНО ЗА КЛИЕНТА:
-   Паролата ВИ се пази В БРАУЗЪРА (localStorage), НЕ В HTML файла.
-   Затова при изтегляне на сайта тя НЕ се пренася в новия файл.
-   След публикация всеки нов посетител с ?edit=1 ще трябва да въведе
-   първоначалната парола (qwe@123) и ще бъде принуден да я смени.
-   Master парола за recovery е известна на разработчика.
-
-   ⚠️ ПРЕДИ ПУБЛИКАЦИЯ: сменете и Formspree ID-то + Calendly линка.
-   ════════════════════════════════════════════════════════════════ */
+/* Edit mode authentication. Internal docs only. */
 
 const MASTER_HASH  = "82c692195ae5d9f7d433cfbacd49623dfc95c7da3017d22ddb16414a9bf91e72";
-const INITIAL_HASH = "aae3c5a5422f96b1a505d4a7479be94d6e44ce4ebf2736ea9758df8e3b39e174";
+const INITIAL_HASH = "a0c60dc00a7a8616438b714062f05f1446ed49aeed5ca7f26862bb2e8bdc3685";
 
 const LS = {
   pwdHash:     'expert_pwd_hash',
@@ -3521,7 +3498,7 @@ function toast(message, type = '') {
   }, 2800);
 }
 
-/* ──────────── SHA-256 (Web Crypto API) ──────────── */
+/* ──────────── Password hashing helper ──────────── */
 async function sha256(text) {
   const buf = new TextEncoder().encode(text);
   const hash = await crypto.subtle.digest('SHA-256', buf);
@@ -4098,8 +4075,46 @@ function buildColorPanel() {
 }
 
 function toggleColorPanel() {
-  document.getElementById('color-panel').classList.toggle('open');
+  const panel = document.getElementById('color-panel');
+  if (!panel) return;
+  if (panel.classList.contains('open')) {
+    hideColorPanel();
+  } else {
+    showColorPanel();
+  }
 }
+
+function showColorPanel() {
+  const panel = document.getElementById('color-panel');
+  if (!panel) return;
+  panel.classList.add('open');
+  // Defer attaching outside-click so the opening click itself isn't caught.
+  setTimeout(() => {
+    document.addEventListener('click', closeColorPanelOnOutside);
+  }, 0);
+}
+
+function hideColorPanel() {
+  const panel = document.getElementById('color-panel');
+  if (!panel) return;
+  panel.classList.remove('open');
+  document.removeEventListener('click', closeColorPanelOnOutside);
+}
+
+function closeColorPanelOnOutside(e) {
+  const panel = document.getElementById('color-panel');
+  const trigger = document.getElementById('btn-colors');
+  if (!panel) return;
+  if (panel.contains(e.target)) return;
+  if (trigger && trigger.contains(e.target)) return;
+  hideColorPanel();
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  const panel = document.getElementById('color-panel');
+  if (panel && panel.classList.contains('open')) hideColorPanel();
+});
 
 /* ──────────── Download site ──────────── */
 function downloadSite() {
@@ -4121,15 +4136,15 @@ function downloadSite() {
       '\n     ════════════════════════════════════════════════════════════════\n' +
       '     🔑 ВАЖНО ЗА ПАРОЛАТА НА EDIT MODE\n\n' +
       '     Вашата парола за редактиране НЕ е заведена в този HTML файл.\n' +
-      '     Тя се пази в localStorage на браузъра, в който я зададохте.\n\n' +
+      '     Тя се пази в браузъра, в който я зададохте.\n\n' +
       '     Това означава:\n' +
       '     • Качете файла на хостинга (Netlify и т.н.)\n' +
       '     • Отворете URL?edit=1 в СЪЩИЯ браузър — паролата ви работи\n' +
-      '     • Отворите ли в друг браузър/устройство — иска първоначална\n' +
-      '       парола (qwe@123) и принуждава смяна\n' +
-      '     • Изчистите ли cookies/data за сайта — паролата се губи и\n' +
-      '       трябва отново да минете през първоначалната\n\n' +
-      '     Master парола за recovery: остава известна на разработчика.\n' +
+      '     • Отворите ли в друг браузър/устройство — ще ви бъде поискана\n' +
+      '       първоначалната парола (получена от разработчика)\n' +
+      '     • Изчистите ли данните за сайта — паролата се губи и трябва\n' +
+      '       отново да минете през първоначалната\n\n' +
+      '     За възстановяване на достъп — свържете се с разработчика.\n' +
       '     Снимки и текст промени се пазят В HTML-а след „💾 Изтегли сайта".\n' +
       '     ════════════════════════════════════════════════════════════════\n  '
     );
