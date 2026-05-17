@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title data-edit="page-title">Експерт. — Счетоводство за малки и средни фирми в Пловдив</title>
-<meta name="description" content="Лицензирана счетоводна кантора в Пловдив. 15+ години опит. Гарантиран отговор до 24ч, застраховка 150 000 лв, без счетоводен жаргон. Безплатна 30-мин консултация.">
+<meta name="description" content="Лицензирана счетоводна кантора в Пловдив. 15+ години опит. Гарантиран отговор до 24ч, застраховка 76 693.78 € · 150 000 лв, без счетоводен жаргон. Безплатна 30-мин консултация.">
 
 <!-- Open Graph (Facebook / LinkedIn) -->
 <meta property="og:type" content="website">
@@ -51,7 +51,7 @@
   "email": "office@example.bg",
   "url": "https://www.example.bg",
   "openingHours": "Mo-Fr 09:00-18:00",
-  "priceRange": "90 - 800 BGN",
+  "priceRange": "46.02 EUR - 409.03 EUR (90 BGN - 800 BGN)",
   "founder": {
     "@type": "Person",
     "name": "Елена Маринова",
@@ -158,7 +158,7 @@
      1. Отворете URL-а с ?edit=1 в края, например:
         https://вашиятсайт.bg/index.html?edit=1
 
-     2. Достъп е разрешен само пон–пет, 08:00–22:00 (часова зона София).
+     2. Достъп е разрешен всеки ден, 08:00–22:00 (часова зона София).
 
      3. Първи login: въведете първоначалната парола „qwe@123"
         (получена от разработчика). Системата ще ви принуди да зададете
@@ -417,12 +417,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .hero-title {
   font-family: var(--font-display);
-  font-size: clamp(34px, 5.5vw, 62px);
+  font-size: clamp(28px, 6vw, 62px);
   font-weight: 500;
   line-height: 1.08;
   color: var(--color-primary);
   margin-bottom: 24px;
   letter-spacing: -0.025em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  padding-right: 16px;
 }
 .hero-title .accent {
   font-style: italic;
@@ -788,6 +792,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-size: clamp(56px, 8vw, 80px);
   letter-spacing: -0.03em;
 }
+.calc-result-price .calc-price-sep {
+  font-size: clamp(56px, 8vw, 80px);
+  opacity: 0.4;
+  padding: 0 10px;
+  letter-spacing: -0.03em;
+}
 .calc-result-price .currency {
   font-size: 24px;
   margin-left: 4px;
@@ -846,7 +856,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   /* scale(1.02) премахнат — стабилен grid */
 }
 .pricing-card.featured .pricing-name,
+.pricing-card.featured .pricing-price-eur,
 .pricing-card.featured .pricing-price-num,
+.pricing-card.featured .pricing-price-bgn-suffix,
+.pricing-card.featured .pricing-price-sep,
 .pricing-card.featured .pricing-feature { color: white; }
 .pricing-card.featured .pricing-desc,
 .pricing-card.featured .pricing-price-unit,
@@ -893,7 +906,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-bottom: 1px solid var(--color-border);
   flex-wrap: wrap;
 }
-.pricing-price-num {
+.pricing-price-eur,
+.pricing-price-num,
+.pricing-price-bgn-suffix,
+.pricing-price-sep {
   font-family: var(--font-display);
   font-size: clamp(40px, 5vw, 48px);
   font-weight: 600;
@@ -904,6 +920,21 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .pricing-price-unit {
   font-size: 14px;
   color: var(--color-muted);
+}
+.pricing-price-sep {
+  opacity: 0.45;
+  padding: 0 4px;
+}
+/* ──────────── Inline dual-currency display (hero text, trust bar, calc) ──────────── */
+/* По ЗВЕРБ: равно визуално присъствие на EUR и BGN до 09.08.2026 */
+.price-eur, .price-bgn {
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+}
+.price-separator {
+  opacity: 0.5;
+  padding: 0 4px;
 }
 .pricing-features {
   list-style: none;
@@ -1913,6 +1944,26 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
   body.edit-mode { padding-top: 0; }
   [data-edit] { outline: none !important; background: none !important; }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   MOBILE TAP TARGETS (v3.3) — WCAG 2.1 AA минимум 44×44px
+   ════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .testimonial-google,
+  .contact-map-link,
+  .reviews-widget-link,
+  .hero-trust a,
+  .contact-info-text a {
+    min-height: 44px;
+    padding: 12px 0;
+    display: inline-flex;
+    align-items: center;
+  }
+  .footer-social-link {
+    width: 44px;
+    height: 44px;
+  }
+}
 </style>
 </head>
 
@@ -1962,7 +2013,7 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
           <span data-edit="hero-title-1">Спрете да се притеснявате за </span><span class="accent" data-edit="hero-title-accent">НАП</span><span data-edit="hero-title-2">. Започнете да гледате печалбата.</span>
         </h1>
         <p class="hero-desc reveal reveal-d2" data-edit="hero-desc">
-          Над 15 години помагаме на малки и средни фирми да водят редовно счетоводство, да оптимизират данъци легално и да спят спокойно. Без счетоводен жаргон. С гаранция за грешки до 150 000 лв.
+          Над 15 години помагаме на малки и средни фирми да водят редовно счетоводство, да оптимизират данъци легално и да спят спокойно. Без счетоводен жаргон. С гаранция за грешки до <span class="price-eur">76 693.78 €</span><span class="price-separator"> · </span><span class="price-bgn">150 000 лв</span>.
         </p>
         <div class="hero-cta-block reveal reveal-d3">
           <a href="#booking" class="btn btn-primary btn-lg" data-edit="hero-cta-primary">
@@ -2022,8 +2073,8 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
         <div class="trustbar-context" data-edit="trust-3-context">в работни дни</div>
       </div>
       <div class="trustbar-item reveal reveal-d3">
-        <div class="trustbar-number" data-edit="trust-4-number">150 000</div>
-        <div class="trustbar-label" data-edit="trust-4-label">лв застраховка</div>
+        <div class="trustbar-number"><span class="price-eur" data-eur-from="trust-4-number">76 693.78 €</span><span class="price-separator trust-bgn-only"> · </span><span class="trust-bgn-only" data-edit="trust-4-number">150 000</span></div>
+        <div class="trustbar-label"><span class="trust-bgn-only" data-edit="trust-4-bgn-suffix">лв </span><span data-edit="trust-4-label">застраховка</span></div>
         <div class="trustbar-context" data-edit="trust-4-context">за грешки от наша страна</div>
       </div>
     </div>
@@ -2206,7 +2257,7 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
       <div class="calc-result">
         <div class="calc-result-label" data-edit="calc-result-label">Ориентировъчна месечна цена</div>
         <div class="calc-result-price">
-          <span class="num" id="calc-price">360</span><span class="currency">лв</span>
+          <span class="num" id="calc-price-eur">184.07</span><span class="currency">€</span><span class="calc-price-sep" id="calc-price-sep">·</span><span class="num" id="calc-price">360</span><span class="currency" id="calc-price-bgn-currency">лв</span>
         </div>
         <div class="calc-result-unit" data-edit="calc-result-unit">на месец, без ДДС</div>
         <a href="#booking" class="calc-result-cta" data-edit="calc-cta">
@@ -2241,8 +2292,11 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
         <div class="pricing-name" data-edit="pricing-1-name">Самозаето лице</div>
         <div class="pricing-desc" data-edit="pricing-1-desc">За freelancers, ЕТ и микро ЕООД</div>
         <div class="pricing-price">
+          <span class="pricing-price-eur" data-eur-from="pricing-1-price">46.02 €</span>
+          <span class="pricing-price-sep">·</span>
           <span class="pricing-price-num" data-edit="pricing-1-price">90</span>
-          <span class="pricing-price-unit" data-edit="pricing-1-unit">лв / месец</span>
+          <span class="pricing-price-bgn-suffix">лв</span>
+          <span class="pricing-price-unit" data-edit="pricing-1-unit">/ месец</span>
         </div>
         <ul class="pricing-features">
           <li class="pricing-feature">
@@ -2271,8 +2325,11 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
         <div class="pricing-name" data-edit="pricing-2-name">Малка фирма</div>
         <div class="pricing-desc" data-edit="pricing-2-desc">ООД/ЕООД с до 5 служители</div>
         <div class="pricing-price">
+          <span class="pricing-price-eur" data-eur-from="pricing-2-price">127.82 €</span>
+          <span class="pricing-price-sep">·</span>
           <span class="pricing-price-num" data-edit="pricing-2-price">250</span>
-          <span class="pricing-price-unit" data-edit="pricing-2-unit">лв / месец</span>
+          <span class="pricing-price-bgn-suffix">лв</span>
+          <span class="pricing-price-unit" data-edit="pricing-2-unit">/ месец</span>
         </div>
         <ul class="pricing-features">
           <li class="pricing-feature">
@@ -2311,8 +2368,11 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
             • За „по договаряне": смени на „По договаряне" и изтрий unit-а (просто остави празно)
             И трите варианта работят с edit mode.
           -->
+          <span class="pricing-price-eur" data-eur-from="pricing-3-price">от 230.08 €</span>
+          <span class="pricing-price-sep">·</span>
           <span class="pricing-price-num" data-edit="pricing-3-price">от 450</span>
-          <span class="pricing-price-unit" data-edit="pricing-3-unit">лв / месец</span>
+          <span class="pricing-price-bgn-suffix">лв</span>
+          <span class="pricing-price-unit" data-edit="pricing-3-unit">/ месец</span>
         </div>
         <ul class="pricing-features">
           <li class="pricing-feature">
@@ -2427,7 +2487,7 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
           <div>
             <h3 class="whyus-item-title" data-edit="why-4-title">Грешим — плащаме. Документирано.</h3>
             <p class="whyus-item-desc" data-edit="why-4-desc">
-              Активна полица за професионална отговорност <strong>за 150 000 лв</strong>. Грешим в декларация → ние плащаме глобата и лихвата, не вие. Това е написано в договора, не само в обещание.
+              Активна полица за професионална отговорност <strong>за <span class="price-eur">76 693.78 €</span><span class="price-separator"> · </span><span class="price-bgn">150 000 лв</span></strong>. Грешим в декларация → ние плащаме глобата и лихвата, не вие. Това е написано в договора, не само в обещание.
             </p>
           </div>
         </div>
@@ -2982,7 +3042,7 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
    • Master парола (recovery) + Initial парола (за първи login)
    • User парола → SHA-256 в localStorage (self-service смяна)
    • Rate limiting: 3 неуспешни опита → 5 мин lockout
-   • Time-based access: пон–пет, 08:00–22:00, Europe/Sofia
+   • Time-based access: всеки ден, 08:00–22:00, Europe/Sofia
    • Auto-logout след 30 мин неактивност
    • Audit log: до 50 събития в localStorage
    • Device fingerprint warning (не блокира, само toast)
@@ -3012,9 +3072,93 @@ const MAX_ATTEMPTS  = 3;
 const LOCKOUT_MS    = 5 * 60 * 1000;     // 5 мин блокиране след 3 грешни опита
 const IDLE_LIMIT_MS = 30 * 60 * 1000;    // 30 мин auto-logout
 const ACCESS_HOURS  = { start: 8, end: 22 };
-const WORK_DAYS     = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
+// v3.3: 7-дневен достъп (преди — само работни дни). Запазваме списъка
+// за audit-логване на деня, но isAccessAllowed не блокира по weekday.
+const WORK_DAYS     = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 
 const SCROLL_REVEAL_THRESHOLD = 0.12;
+
+/* ════════════════════════════════════════════════════════════════
+   EUR/BGN DUAL CURRENCY (v3.3, по ЗВЕРБ)
+   • Фиксиран курс: 1 EUR = 1.95583 BGN
+   • До 08.08.2026 — двойно показване (EUR · BGN), равни размери
+   • От 09.08.2026 — само EUR (BGN се скрива автоматично)
+   ════════════════════════════════════════════════════════════════ */
+const EUR_RATE = 1.95583;
+const EURO_ONLY_DATE = new Date('2026-08-09T00:00:00+03:00');
+
+function bgnToEur(bgn) {
+  const n = parseFloat(bgn);
+  if (!isFinite(n)) return '0.00';
+  const eur = (n / EUR_RATE).toFixed(2);
+  // Български формат: интервал като разделител на хилядите
+  const [intPart, decPart] = eur.split('.');
+  return intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '.' + decPart;
+}
+
+function parseBgnAmount(text) {
+  if (text == null) return null;
+  const cleaned = String(text).replace(/ /g, ' ');
+  const match = cleaned.match(/(\d[\d\s]*)/);
+  if (!match) return null;
+  const n = parseFloat(match[1].replace(/\s+/g, ''));
+  return isFinite(n) ? n : null;
+}
+
+function getBgnPrefix(text) {
+  const m = String(text || '').match(/^(\s*от\s+)/i);
+  return m ? m[1].trim() + ' ' : '';
+}
+
+function isEuroOnlyEra() {
+  return new Date() >= EURO_ONLY_DATE;
+}
+
+function syncDualPrice(sourceEl) {
+  if (!sourceEl) return;
+  const key = sourceEl.dataset.edit;
+  if (!key) return;
+  const eurEl = document.querySelector('[data-eur-from="' + key + '"]');
+  if (!eurEl) return;
+  const amount = parseBgnAmount(sourceEl.textContent);
+  if (amount == null) return;
+  const prefix = getBgnPrefix(sourceEl.textContent);
+  eurEl.textContent = prefix + bgnToEur(amount) + ' €';
+}
+
+function initDualPricing() {
+  // 1. Initial sync EUR от BGN източник
+  document.querySelectorAll('[data-eur-from]').forEach((eurEl) => {
+    const key = eurEl.dataset.eurFrom;
+    const sourceEl = document.querySelector('[data-edit="' + key + '"]');
+    if (sourceEl) syncDualPrice(sourceEl);
+  });
+
+  // 2. След 09.08.2026 — скрий всички BGN елементи
+  if (isEuroOnlyEra()) {
+    document.querySelectorAll(
+      '.price-bgn, .price-separator, .trust-bgn-only, ' +
+      '.pricing-price-num, .pricing-price-bgn-suffix, .pricing-price-sep, ' +
+      '#calc-price, #calc-price-bgn-currency, #calc-price-sep'
+    ).forEach((el) => { el.style.display = 'none'; });
+    // Махни „лв" от pricing-unit ако присъства
+    document.querySelectorAll('.pricing-price-unit').forEach((el) => {
+      el.textContent = el.textContent.replace(/лв\s*/g, '').trim() || '/ месец';
+    });
+  }
+
+  // 3. MutationObserver — едит-мод сменя BGN сума, EUR се преизчислява
+  document.querySelectorAll('[data-edit]').forEach((sourceEl) => {
+    const key = sourceEl.dataset.edit;
+    if (!document.querySelector('[data-eur-from="' + key + '"]')) return;
+    const observer = new MutationObserver(() => syncDualPrice(sourceEl));
+    observer.observe(sourceEl, { characterData: true, childList: true, subtree: true });
+    sourceEl.addEventListener('input', () => syncDualPrice(sourceEl));
+    sourceEl.addEventListener('blur', () => syncDualPrice(sourceEl));
+  });
+}
+
+initDualPricing();
 
 /* ──────────── Scroll Reveal ──────────── */
 const revealObserver = new IntersectionObserver((entries) => {
@@ -3032,6 +3176,7 @@ const calcType = document.getElementById('calc-type');
 const calcDocs = document.getElementById('calc-docs');
 const calcVat  = document.getElementById('calc-vat');
 const calcPriceEl = document.getElementById('calc-price');
+const calcPriceEurEl = document.getElementById('calc-price-eur');
 
 function updateCalc() {
   if (!calcType || !calcDocs || !calcVat) return;
@@ -3048,6 +3193,7 @@ function updateCalc() {
   if (calcVat.value === 'yes') price += 50;
 
   calcPriceEl.textContent = price;
+  if (calcPriceEurEl) calcPriceEurEl.textContent = bgnToEur(price);
 }
 
 [calcType, calcDocs, calcVat].forEach(el => {
@@ -3188,7 +3334,7 @@ function attachIdleListeners() {
 
 /* ──────────── Login screen ──────────── */
 async function showLogin() {
-  // 1. Време на достъп (Europe/Sofia, пон–пет 08:00–22:00)
+  // 1. Време на достъп (Europe/Sofia, 08:00–22:00, всеки ден)
   if (!isAccessAllowed()) {
     audit('access_blocked', 'hour=' + getSofiaHour() + ' day=' + getSofiaWeekday());
     showAccessBlocked();
@@ -3283,7 +3429,7 @@ function showAccessBlocked() {
   overlay.innerHTML = `
     <div class="edit-login">
       <h2>⏰ Извън работно време</h2>
-      <p>Режимът за редактиране е достъпен <strong>понеделник – петък, 08:00 – 22:00</strong> (часова зона София). Опитайте отново в работно време.</p>
+      <p>Режимът за редактиране е достъпен <strong>08:00 – 22:00</strong> (часова зона София). Опитайте отново в работно време.</p>
       <button id="block-close">Затвори</button>
     </div>
   `;
@@ -3578,7 +3724,11 @@ function enableImageUpload() {
 }
 
 function replaceImage(container, dataUrl) {
-  container.innerHTML = `<img src="${dataUrl}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">`;
+  // v3.3: hero portrait е above-the-fold → eager; всичко друго → lazy
+  const isHero = container.classList.contains('hero-portrait') ||
+                 (container.closest && container.closest('.hero'));
+  const loading = isHero ? 'eager' : 'lazy';
+  container.innerHTML = `<img src="${dataUrl}" alt="" loading="${loading}" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;">`;
 }
 
 /* ──────────── Color panel ──────────── */
