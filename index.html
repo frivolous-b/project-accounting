@@ -421,7 +421,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .hero-title {
   font-family: var(--font-display);
-  font-size: clamp(28px, 6vw, 62px);
+  font-size: clamp(24px, 5.5vw, 62px);
   font-weight: 500;
   line-height: 1.08;
   color: var(--color-primary);
@@ -430,7 +430,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   word-break: keep-all;
   overflow-wrap: break-word;
   hyphens: auto;
-  padding-right: 16px;
+  padding-right: 24px;
+  padding-left: 4px;
 }
 .hero-title .accent {
   font-style: italic;
@@ -1989,9 +1990,26 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
 }
 
 /* ════════════════════════════════════════════════════════════════
-   MOBILE OVERFLOW FIXES (v3.3.1) — Galaxy S20 FE 360px
+   MOBILE OVERFLOW FIXES (v3.3.1 + v3.3.3) — Galaxy S20 FE 360px
    ════════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
+  /* v3.3.3 — Hero визуал и founder badge не достигат до ръба */
+  .hero-visual {
+    margin-left: 16px;
+    margin-right: 16px;
+    max-width: calc(100% - 32px);
+  }
+  .hero-founder-badge {
+    /* Запазваме left:50% + translateX(-50%) центриране (вече зададено) */
+    max-width: calc(100% - 32px);
+  }
+  .hero-founder-text span {
+    font-size: 12px;
+    line-height: 1.3;
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+
   /* Trustbar #4 — двойна валута с дълги числа: стак на мобилно */
   .trustbar-number {
     font-size: clamp(20px, 5vw, 32px);
@@ -2018,6 +2036,139 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
     display: block;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   MOBILE BURGER NAVIGATION (v3.3.3)
+   • Видим на ≤1023px, скрит на десктоп
+   • Drawer от дясно, backdrop за затваряне
+   ════════════════════════════════════════════════════════════════ */
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  margin-left: 8px;
+  color: var(--color-primary);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s;
+  min-width: 44px;
+  min-height: 44px;
+}
+.nav-toggle:hover {
+  background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+}
+@media (max-width: 1023px) {
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.mobile-nav {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  visibility: hidden;
+}
+.mobile-nav[aria-hidden="false"] {
+  visibility: visible;
+  pointer-events: auto;
+}
+.mobile-nav-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 41, 64, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.mobile-nav[aria-hidden="false"] .mobile-nav-backdrop {
+  opacity: 1;
+}
+.mobile-nav-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(320px, 85vw);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+  transform: translateX(100%);
+  transition: transform 0.3s ease-out;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.mobile-nav[aria-hidden="false"] .mobile-nav-panel {
+  transform: translateX(0);
+}
+.mobile-nav-close {
+  align-self: flex-end;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  color: var(--color-primary);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.mobile-nav-close:hover {
+  background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+}
+.mobile-nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mobile-nav-list a {
+  display: block;
+  padding: 14px 12px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text);
+  border-radius: var(--radius-sm);
+  transition: background 0.2s;
+}
+.mobile-nav-list a:hover {
+  background: color-mix(in srgb, var(--color-primary) 6%, transparent);
+}
+.mobile-nav-divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 12px 0;
+  list-style: none;
+}
+.mobile-nav-phone {
+  color: var(--color-primary) !important;
+  font-weight: 600 !important;
+}
+.mobile-nav-cta {
+  background: var(--color-cta);
+  color: white !important;
+  font-weight: 600 !important;
+  text-align: center;
+  margin-top: 8px;
+}
+.mobile-nav-cta:hover {
+  background: color-mix(in srgb, var(--color-cta) 85%, black) !important;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .mobile-nav { display: none; }
+}
 </style>
 </head>
 
@@ -2042,6 +2193,13 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
           <li><a href="#въпроси" data-edit="nav-faq">Въпроси</a></li>
         </ul>
       </nav>
+      <button class="nav-toggle" aria-label="Меню" aria-expanded="false" aria-controls="mobile-nav">
+        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
       <div class="header-cta-wrap">
         <a href="tel:+359888123456" class="header-phone">
           <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -2052,6 +2210,31 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
     </div>
   </div>
 </header>
+
+<!-- ════════════ MOBILE NAV DRAWER (v3.3.3) ════════════ -->
+<div id="mobile-nav" class="mobile-nav" aria-hidden="true">
+  <div class="mobile-nav-backdrop"></div>
+  <div class="mobile-nav-panel">
+    <button class="mobile-nav-close" aria-label="Затвори меню">
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <line x1="6" y1="18" x2="18" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <nav aria-label="Мобилна навигация">
+      <ul class="mobile-nav-list">
+        <li><a href="#услуги">Услуги</a></li>
+        <li><a href="#калкулатор">Калкулатор</a></li>
+        <li><a href="#цени">Цени</a></li>
+        <li><a href="#екип">Екип</a></li>
+        <li><a href="#въпроси">Въпроси</a></li>
+        <li class="mobile-nav-divider"></li>
+        <li><a href="tel:+359888123456" class="mobile-nav-phone">📞 0888 123 456</a></li>
+        <li><a href="#booking" class="mobile-nav-cta">Безплатна консултация</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
 
 <main id="main-content">
 
@@ -3212,6 +3395,46 @@ function initDualPricing() {
 }
 
 initDualPricing();
+
+/* ──────────── Mobile burger menu (v3.3.3) ──────────── */
+function initMobileNav() {
+  const toggle = document.querySelector('.nav-toggle');
+  const drawer = document.querySelector('.mobile-nav');
+  const closeBtn = document.querySelector('.mobile-nav-close');
+  const backdrop = document.querySelector('.mobile-nav-backdrop');
+  const links = document.querySelectorAll('.mobile-nav-list a');
+
+  if (!toggle || !drawer) return;
+
+  function openMenu() {
+    drawer.setAttribute('aria-hidden', 'false');
+    toggle.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('menu-open');
+  }
+  function closeMenu() {
+    drawer.setAttribute('aria-hidden', 'true');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('menu-open');
+  }
+
+  toggle.addEventListener('click', openMenu);
+  if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+  if (backdrop) backdrop.addEventListener('click', closeMenu);
+
+  links.forEach((link) => {
+    link.addEventListener('click', () => {
+      setTimeout(closeMenu, 100);
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer.getAttribute('aria-hidden') === 'false') {
+      closeMenu();
+    }
+  });
+}
+
+initMobileNav();
 
 /* ──────────── Scroll Reveal ──────────── */
 const revealObserver = new IntersectionObserver((entries) => {
