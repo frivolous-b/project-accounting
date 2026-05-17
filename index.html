@@ -9,7 +9,7 @@
 <!-- Open Graph (Facebook / LinkedIn) -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Експерт. — Счетоводство, на което се разчита">
-<meta property="og:description" content="Спрете да се притеснявате за НАП. Започнете да гледате печалбата. 15+ години опит, 200+ клиента, 4.9/5 от 87 Google ревюта.">
+<meta property="og:description" content="Забравете за НАП. Фокус върху печалбата. 15+ години опит, 200+ клиента, 4.9/5 от 87 Google ревюта.">
 <meta property="og:locale" content="bg_BG">
 <meta property="og:image" content="https://www.example.bg/og-image.jpg">
 <meta property="og:url" content="https://www.example.bg">
@@ -17,7 +17,7 @@
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Експерт. — Счетоводство, на което се разчита">
-<meta name="twitter:description" content="Спрете да се притеснявате за НАП. Започнете да гледате печалбата. 15+ години опит, 200+ клиента, 4.9/5 от 87 Google ревюта.">
+<meta name="twitter:description" content="Забравете за НАП. Фокус върху печалбата. 15+ години опит, 200+ клиента, 4.9/5 от 87 Google ревюта.">
 <meta name="twitter:image" content="https://www.example.bg/og-image.jpg">
 
 <!-- ════════════════════════════════════════════════════════════════
@@ -1995,7 +1995,17 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
    MOBILE OVERFLOW FIXES (v3.3.1 + v3.3.3) — Galaxy S20 FE 360px
    ════════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  /* v3.3.4 — padding вместо margin: badge остава в видимата зона */
+  /* v3.3.5 — Diagnosed root causes of hero overflow (Playwright @ 360x800):
+     (A) .btn has white-space:nowrap; hero primary CTA text "Запази 30-мин
+         консултация — безплатно" measured at ~418px wide → forced grid
+         column to 418, all hero-grid children inherited that → 75px overflow.
+     (B) After (A), residual 8px overflow: .hero-visual min-content = 352px.
+         Cause: .hero-portrait { aspect-ratio: 4/5; min-height: 400px }
+         enforced min-width = 320; +32px hero-visual padding = 352.
+         Fix: drop min-height on mobile, let aspect-ratio scale naturally. */
+  .hero-cta-block .btn {
+    white-space: normal;
+  }
   .hero-visual {
     max-width: 100%;
     margin: 0;
@@ -2004,6 +2014,7 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
   }
   .hero-portrait {
     overflow: visible;
+    min-height: 0;
   }
   .hero-founder-badge {
     /* Запазваме left:50% + translateX(-50%) центриране (вече зададено) */
@@ -2255,7 +2266,7 @@ body.menu-open {
           Лицензирана счетоводна кантора · Пловдив
         </span>
         <h1 class="hero-title reveal reveal-d1">
-          <span data-edit="hero-title-1">Спрете да се притеснявате за </span><span class="accent" data-edit="hero-title-accent">НАП</span><span data-edit="hero-title-2">. Започнете да гледате печалбата.</span>
+          <span data-edit="hero-title-1">Забравете за </span><span class="accent" data-edit="hero-title-accent">НАП</span><span data-edit="hero-title-2">. Фокус върху печалбата.</span>
         </h1>
         <p class="hero-desc reveal reveal-d2" data-edit="hero-desc">
           Над 15 години помагаме на малки и средни фирми да водят редовно счетоводство, да оптимизират данъци легално и да спят спокойно. Без счетоводен жаргон. С гаранция за грешките ни.
