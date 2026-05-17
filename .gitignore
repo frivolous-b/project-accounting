@@ -73,3 +73,12 @@ logs/
 *.tmp
 *.temp
 ~$*
+
+# Secrets and credentials (NEVER commit)
+SECRETS.txt
+SECRETS.md
+.env
+.env.local
+*.secret
+credentials.json
+api-keys.txt
