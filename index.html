@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title data-edit="page-title">Експерт. — Счетоводство за малки и средни фирми в Пловдив</title>
-<meta name="description" content="Лицензирана счетоводна кантора в Пловдив. 15+ години опит. Гарантиран отговор до 24ч, застраховка 76 693.78 € · 150 000 лв, без счетоводен жаргон. Безплатна 30-мин консултация.">
+<meta name="description" content="Лицензирана счетоводна кантора в Пловдив. 15+ години опит. Гарантиран отговор до 24ч, с гаранция за грешките ни, без счетоводен жаргон. Безплатна 30-мин консултация.">
 
 <!-- Open Graph (Facebook / LinkedIn) -->
 <meta property="og:type" content="website">
@@ -225,6 +225,10 @@
 
 /* ════════════ RESET & BASE ════════════ */
 * { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: 80px; }
 body {
   font-family: var(--font-body);
@@ -789,11 +793,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   margin-bottom: 10px;
 }
 .calc-result-price .num {
-  font-size: clamp(56px, 8vw, 80px);
+  font-size: clamp(36px, 7vw, 80px);
   letter-spacing: -0.03em;
 }
 .calc-result-price .calc-price-sep {
-  font-size: clamp(56px, 8vw, 80px);
+  font-size: clamp(36px, 7vw, 80px);
   opacity: 0.4;
   padding: 0 10px;
   letter-spacing: -0.03em;
@@ -1964,6 +1968,37 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
     height: 44px;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   MOBILE OVERFLOW FIXES (v3.3.1) — Galaxy S20 FE 360px
+   ════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Trustbar #4 — двойна валута с дълги числа: стак на мобилно */
+  .trustbar-number {
+    font-size: clamp(20px, 5vw, 32px);
+  }
+  .trustbar-number .price-eur,
+  .trustbar-number .price-bgn,
+  .trustbar-number .trust-bgn-only {
+    white-space: nowrap;
+  }
+  .trustbar-number .price-separator {
+    display: block;
+    text-align: center;
+    height: 0.4em;
+  }
+}
+
+/* Why-us полица: пази дължината на сумата от мид-чупене */
+.insurance-amount {
+  white-space: nowrap;
+  display: inline-block;
+}
+@media (max-width: 480px) {
+  .price-secondary {
+    display: block;
+  }
+}
 </style>
 </head>
 
@@ -2013,7 +2048,7 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
           <span data-edit="hero-title-1">Спрете да се притеснявате за </span><span class="accent" data-edit="hero-title-accent">НАП</span><span data-edit="hero-title-2">. Започнете да гледате печалбата.</span>
         </h1>
         <p class="hero-desc reveal reveal-d2" data-edit="hero-desc">
-          Над 15 години помагаме на малки и средни фирми да водят редовно счетоводство, да оптимизират данъци легално и да спят спокойно. Без счетоводен жаргон. С гаранция за грешки до <span class="price-eur">76 693.78 €</span><span class="price-separator"> · </span><span class="price-bgn">150 000 лв</span>.
+          Над 15 години помагаме на малки и средни фирми да водят редовно счетоводство, да оптимизират данъци легално и да спят спокойно. Без счетоводен жаргон. С гаранция за грешките ни.
         </p>
         <div class="hero-cta-block reveal reveal-d3">
           <a href="#booking" class="btn btn-primary btn-lg" data-edit="hero-cta-primary">
@@ -2487,7 +2522,7 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
           <div>
             <h3 class="whyus-item-title" data-edit="why-4-title">Грешим — плащаме. Документирано.</h3>
             <p class="whyus-item-desc" data-edit="why-4-desc">
-              Активна полица за професионална отговорност <strong>за <span class="price-eur">76 693.78 €</span><span class="price-separator"> · </span><span class="price-bgn">150 000 лв</span></strong>. Грешим в декларация → ние плащаме глобата и лихвата, не вие. Това е написано в договора, не само в обещание.
+              Активна полица за професионална отговорност <strong>с покритие до <span class="insurance-amount">150 000 лв <span class="price-secondary">(76 693.78 €)</span></span></strong>. Грешим в декларация → ние плащаме глобата и лихвата, не вие. Това е написано в договора, не само в обещание.
             </p>
           </div>
         </div>
