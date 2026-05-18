@@ -336,6 +336,67 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   color: var(--color-cta);
   margin-left: 1px;
 }
+
+/* ════════════ v3.4 Brand logo (image + text) ════════════ */
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s;
+}
+.brand-logo:hover { opacity: 0.85; }
+.brand-logo-image {
+  height: 36px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.brand-logo-text {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-primary);
+}
+.brand-logo-text::after {
+  content: ".";
+  color: var(--color-cta);
+}
+.brand-logo[data-show-logo="false"] .brand-logo-image,
+body.edit-mode .brand-logo[data-show-logo="false"] .brand-logo-image[src=""] { display: none !important; }
+.brand-logo[data-show-text="false"] .brand-logo-text { display: none !important; }
+
+/* Edit mode placeholder when no logo uploaded */
+body.edit-mode .brand-logo-image[src=""] {
+  display: inline-block !important;
+  width: 40px;
+  height: 36px;
+  background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+  border: 2px dashed color-mix(in srgb, var(--color-primary) 30%, transparent);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  position: relative;
+}
+body.edit-mode .brand-logo-image[src=""]::before {
+  content: "+";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--color-primary);
+  opacity: 0.6;
+}
+@media (max-width: 768px) {
+  .brand-logo-image { height: 32px; max-width: 100px; }
+  .brand-logo-text { font-size: 18px; }
+  .brand-logo { gap: 8px; }
+}
+
 .nav-list {
   display: none;
   gap: 28px;
@@ -1873,6 +1934,9 @@ body.edit-mode [data-edit-image]::after {
 }
 body.edit-mode [data-edit-image]:hover { cursor: pointer; }
 body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
+/* v3.4: brand-logo has its own "+" placeholder; suppress generic camera overlay */
+body.edit-mode .brand-logo-image[data-edit-image]::after,
+body.edit-mode .brand-logo-image[data-edit-image]:hover::after { content: none !important; }
 
 /* Color panel */
 .color-panel {
@@ -1941,6 +2005,97 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
 }
 .color-reset:hover { background: var(--color-border); }
 
+/* v3.4 Brand panel — reuses color-panel layout */
+.brand-panel {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+  padding: 24px;
+  width: 280px;
+  z-index: 9997;
+  display: none;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+.brand-panel.open { display: block; }
+.brand-panel h3 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--color-primary);
+  margin-bottom: 6px;
+}
+.brand-panel p { color: var(--color-muted); font-size: 13px; margin-bottom: 16px; }
+.brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.brand-row:last-of-type { border-bottom: none; }
+.brand-row-label { font-size: 13px; color: var(--color-text); }
+.brand-toggle {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--color-border);
+  border: 0;
+  cursor: pointer;
+  transition: background 0.2s;
+  padding: 0;
+  flex-shrink: 0;
+}
+.brand-toggle::after {
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.brand-toggle[aria-pressed="true"] { background: var(--color-secondary, #2A9D8F); }
+.brand-toggle[aria-pressed="true"]::after { transform: translateX(18px); }
+.brand-actions {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.brand-actions button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition: background 0.15s, border-color 0.15s;
+}
+.brand-actions button:hover { background: var(--color-border); }
+.brand-actions .brand-btn-upload {
+  background: var(--color-secondary, #2A9D8F);
+  color: white;
+  border-color: transparent;
+}
+.brand-actions .brand-btn-upload:hover { background: color-mix(in srgb, var(--color-secondary, #2A9D8F) 85%, black); }
+.brand-actions .brand-btn-delete {
+  color: #b91c1c;
+  border-color: color-mix(in srgb, #b91c1c 30%, transparent);
+}
+.brand-actions .brand-btn-delete:hover { background: color-mix(in srgb, #b91c1c 8%, white); }
+.brand-actions .brand-btn-delete[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 /* Toast notifications */
 .toast {
   position: fixed;
@@ -1963,7 +2118,7 @@ body.edit-mode [data-edit-image]:hover::after { opacity: 1; }
 .toast.error { background: #dc2626; }
 
 @media print {
-  .edit-bar, .color-panel, .edit-overlay, .toast, .mobile-cta { display: none !important; }
+  .edit-bar, .color-panel, .brand-panel, .edit-overlay, .toast, .mobile-cta { display: none !important; }
   body.edit-mode { padding-top: 0; }
   [data-edit] { outline: none !important; background: none !important; }
 }
@@ -2197,8 +2352,14 @@ body.menu-open {
 <header class="header">
   <div class="container">
     <div class="header-inner">
-      <a href="#" class="logo">
-        <span data-edit="logo-text">Експерт</span><span class="logo-dot">.</span>
+      <a href="#" class="brand-logo" aria-label="Експерт. — начало">
+        <img class="brand-logo-image"
+             src=""
+             alt=""
+             data-edit-image="brand-logo"
+             data-empty-text="Качи лого"
+             style="display: none;">
+        <span class="brand-logo-text" data-edit="brand-name">Експерт</span>
       </a>
       <nav aria-label="Главна навигация">
         <ul class="nav-list">
@@ -3889,6 +4050,7 @@ function buildEditBar() {
     <span class="edit-bar-info">Кликнете върху текст</span>
     <div class="edit-bar-spacer"></div>
     <button class="edit-bar-btn" id="btn-colors">🎨 Цветове</button>
+    <button class="edit-bar-btn" id="btn-brand">🏢 Бранд</button>
     <button class="edit-bar-btn" id="btn-password">🔑 Парола</button>
     <button class="edit-bar-btn" id="btn-log">📋 Log</button>
     <button class="edit-bar-btn primary" id="btn-download">💾 Изтегли сайта</button>
@@ -3897,6 +4059,7 @@ function buildEditBar() {
   document.body.prepend(bar);
 
   document.getElementById('btn-colors').addEventListener('click', toggleColorPanel);
+  document.getElementById('btn-brand').addEventListener('click', toggleBrandPanel);
   document.getElementById('btn-password').addEventListener('click', showChangePassword);
   document.getElementById('btn-log').addEventListener('click', showAuditLog);
   document.getElementById('btn-download').addEventListener('click', downloadSite);
@@ -3910,6 +4073,7 @@ function buildEditBar() {
   });
 
   buildColorPanel();
+  buildBrandPanel();
 }
 
 /* ──────────── Inline text editing ──────────── */
@@ -3967,6 +4131,12 @@ function enableImageUpload() {
       e.preventDefault();
       e.stopPropagation();
 
+      // v3.4: brand-logo has its own validation + storage flow
+      if (el.dataset.editImage === 'brand-logo') {
+        openBrandLogoPicker();
+        return;
+      }
+
       const input = document.createElement('input');
       input.type = 'file';
       input.accept = 'image/*';
@@ -4001,6 +4171,232 @@ function replaceImage(container, dataUrl) {
                  (container.closest && container.closest('.hero'));
   const loading = isHero ? 'eager' : 'lazy';
   container.innerHTML = `<img src="${dataUrl}" alt="" loading="${loading}" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;">`;
+}
+
+/* ──────────── v3.4 Brand logo upload, persistence, toggles ──────────── */
+const BRAND_LOGO_KEY = 'brand-logo-data';
+const BRAND_DISPLAY_KEY = 'brand-display-settings';
+const BRAND_LOGO_MAX_BYTES = 1048576; // 1 MB
+const BRAND_LOGO_MIME = ['image/png', 'image/jpeg', 'image/svg+xml', 'image/webp'];
+
+function getBrandLogoEl()   { return document.querySelector('.brand-logo'); }
+function getBrandImageEl()  { return document.querySelector('.brand-logo-image'); }
+function getBrandTextEl()   { return document.querySelector('.brand-logo-text'); }
+
+function applyBrandLogoData(dataUrl) {
+  const img = getBrandImageEl();
+  const text = getBrandTextEl();
+  if (!img) return;
+  img.src = dataUrl;
+  img.alt = (text ? text.textContent.trim() : 'Brand') + ' logo';
+  img.style.display = 'inline-block';
+}
+
+function clearBrandLogo() {
+  const img = getBrandImageEl();
+  if (!img) return;
+  img.removeAttribute('src');
+  img.setAttribute('src', '');
+  img.alt = '';
+  img.style.display = 'none';
+  try { localStorage.removeItem(BRAND_LOGO_KEY); } catch (_) {}
+}
+
+function getBrandDisplaySettings() {
+  try {
+    const raw = localStorage.getItem(BRAND_DISPLAY_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (_) {}
+  return { showLogo: true, showText: true };
+}
+
+function saveBrandDisplaySettings(settings) {
+  try { localStorage.setItem(BRAND_DISPLAY_KEY, JSON.stringify(settings)); } catch (_) {}
+}
+
+function applyBrandDisplaySettings(settings) {
+  const el = getBrandLogoEl();
+  if (!el) return;
+  el.setAttribute('data-show-logo', settings.showLogo ? 'true' : 'false');
+  el.setAttribute('data-show-text', settings.showText ? 'true' : 'false');
+}
+
+function initBrandLogo() {
+  const settings = getBrandDisplaySettings();
+  applyBrandDisplaySettings(settings);
+  try {
+    const saved = localStorage.getItem(BRAND_LOGO_KEY);
+    if (saved) applyBrandLogoData(saved);
+  } catch (_) {}
+}
+
+function openBrandLogoPicker() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.png,.jpg,.jpeg,.svg,.webp,image/png,image/jpeg,image/svg+xml,image/webp';
+  input.style.display = 'none';
+  document.body.appendChild(input);
+
+  input.addEventListener('change', function(ev) {
+    const file = ev.target.files[0];
+    if (!file) { input.remove(); return; }
+
+    if (BRAND_LOGO_MIME.indexOf(file.type) === -1) {
+      toast('Моля използвайте PNG, JPG или SVG', 'error');
+      input.remove();
+      return;
+    }
+    if (file.size > BRAND_LOGO_MAX_BYTES) {
+      toast('Файлът е по-голям от 1MB. Намалете размера.', 'error');
+      input.remove();
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e2) {
+      const dataUrl = e2.target.result;
+      // Height check (raster only — SVG has no intrinsic pixel height)
+      if (file.type !== 'image/svg+xml') {
+        const probe = new Image();
+        probe.onload = function() {
+          if (probe.naturalHeight > 500) {
+            toast('Препоръчваме лого с височина до 200px за по-добро качество', 'error');
+          }
+          finalizeBrandLogo(dataUrl);
+        };
+        probe.onerror = function() { finalizeBrandLogo(dataUrl); };
+        probe.src = dataUrl;
+      } else {
+        finalizeBrandLogo(dataUrl);
+      }
+      input.remove();
+    };
+    reader.readAsDataURL(file);
+  });
+
+  input.click();
+}
+
+function finalizeBrandLogo(dataUrl) {
+  applyBrandLogoData(dataUrl);
+  // Ensure logo is visible after upload
+  const settings = getBrandDisplaySettings();
+  settings.showLogo = true;
+  saveBrandDisplaySettings(settings);
+  applyBrandDisplaySettings(settings);
+  try { localStorage.setItem(BRAND_LOGO_KEY, dataUrl); } catch (_) {}
+  refreshBrandPanel();
+  toast('Логото е качено успешно', 'success');
+}
+
+function deleteBrandLogo() {
+  clearBrandLogo();
+  // Reset to text-only
+  const settings = { showLogo: false, showText: true };
+  saveBrandDisplaySettings(settings);
+  applyBrandDisplaySettings(settings);
+  refreshBrandPanel();
+  toast('Логото е изтрито', 'success');
+}
+
+/* ──────────── v3.4 Brand panel (edit-mode toggles) ──────────── */
+function buildBrandPanel() {
+  if (document.getElementById('brand-panel')) return;
+  const panel = document.createElement('div');
+  panel.className = 'brand-panel';
+  panel.id = 'brand-panel';
+  panel.innerHTML = `
+    <h3>🏢 Бранд настройки</h3>
+    <p>Контролирайте логото и името в header.</p>
+    <div class="brand-row">
+      <span class="brand-row-label">Покажи лого</span>
+      <button type="button" class="brand-toggle" id="brand-toggle-logo"
+              aria-label="Покажи или скрий логото" aria-pressed="true"></button>
+    </div>
+    <div class="brand-row">
+      <span class="brand-row-label">Покажи име</span>
+      <button type="button" class="brand-toggle" id="brand-toggle-text"
+              aria-label="Покажи или скрий името" aria-pressed="true"></button>
+    </div>
+    <div class="brand-actions">
+      <button type="button" class="brand-btn-upload" id="brand-btn-upload"
+              aria-label="Качи ново лого">Качи ново лого</button>
+      <button type="button" class="brand-btn-delete" id="brand-btn-delete"
+              aria-label="Изтрий лого">Изтрий лого</button>
+    </div>
+  `;
+  document.body.appendChild(panel);
+
+  document.getElementById('brand-toggle-logo').addEventListener('click', () => {
+    const s = getBrandDisplaySettings();
+    s.showLogo = !s.showLogo;
+    saveBrandDisplaySettings(s);
+    applyBrandDisplaySettings(s);
+    refreshBrandPanel();
+  });
+  document.getElementById('brand-toggle-text').addEventListener('click', () => {
+    const s = getBrandDisplaySettings();
+    s.showText = !s.showText;
+    saveBrandDisplaySettings(s);
+    applyBrandDisplaySettings(s);
+    refreshBrandPanel();
+  });
+  document.getElementById('brand-btn-upload').addEventListener('click', openBrandLogoPicker);
+  document.getElementById('brand-btn-delete').addEventListener('click', deleteBrandLogo);
+
+  refreshBrandPanel();
+}
+
+function refreshBrandPanel() {
+  const panel = document.getElementById('brand-panel');
+  if (!panel) return;
+  const s = getBrandDisplaySettings();
+  const tl = panel.querySelector('#brand-toggle-logo');
+  const tt = panel.querySelector('#brand-toggle-text');
+  if (tl) tl.setAttribute('aria-pressed', s.showLogo ? 'true' : 'false');
+  if (tt) tt.setAttribute('aria-pressed', s.showText ? 'true' : 'false');
+
+  const del = panel.querySelector('#brand-btn-delete');
+  const hasLogo = (() => { try { return !!localStorage.getItem(BRAND_LOGO_KEY); } catch (_) { return false; } })();
+  if (del) {
+    if (hasLogo) del.removeAttribute('disabled');
+    else del.setAttribute('disabled', 'true');
+  }
+}
+
+function toggleBrandPanel() {
+  const panel = document.getElementById('brand-panel');
+  if (!panel) return;
+  if (panel.classList.contains('open')) {
+    hideBrandPanel();
+  } else {
+    showBrandPanel();
+  }
+}
+
+function showBrandPanel() {
+  const panel = document.getElementById('brand-panel');
+  if (!panel) return;
+  refreshBrandPanel();
+  panel.classList.add('open');
+  setTimeout(() => {
+    document.addEventListener('click', closeBrandPanelOnOutside);
+  }, 0);
+}
+
+function hideBrandPanel() {
+  const panel = document.getElementById('brand-panel');
+  if (!panel) return;
+  panel.classList.remove('open');
+  document.removeEventListener('click', closeBrandPanelOnOutside);
+}
+
+function closeBrandPanelOnOutside(e) {
+  const panel = document.getElementById('brand-panel');
+  const btn = document.getElementById('btn-brand');
+  if (!panel) return;
+  if (panel.contains(e.target) || (btn && btn.contains(e.target))) return;
+  hideBrandPanel();
 }
 
 /* ──────────── Color panel ──────────── */
@@ -4122,7 +4518,7 @@ function downloadSite() {
   const clone = document.documentElement.cloneNode(true);
 
   // Премахни edit-mode UI
-  clone.querySelectorAll('.edit-bar, .color-panel, .toast, .edit-overlay').forEach(n => n.remove());
+  clone.querySelectorAll('.edit-bar, .color-panel, .brand-panel, .toast, .edit-overlay').forEach(n => n.remove());
 
   const body = clone.querySelector('body');
   if (body) body.classList.remove('edit-mode');
@@ -4182,6 +4578,15 @@ function downloadSite() {
 }
 
 /* ──────────── Boot ──────────── */
+function bootBrandLogo() {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBrandLogo);
+  } else {
+    initBrandLogo();
+  }
+}
+bootBrandLogo();
+
 if (isEditRequested) {
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', showLogin);
